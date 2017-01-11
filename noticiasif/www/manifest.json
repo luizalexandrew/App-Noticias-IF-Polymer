@@ -1,0 +1,7 @@
+{
+  "name": "noticiasif",
+  "short_name": "noticiasif",
+  "description": "Aplicativo de notícias do ifgoiano",
+  "start_url": "/",
+  "display": "standalone"
+}
