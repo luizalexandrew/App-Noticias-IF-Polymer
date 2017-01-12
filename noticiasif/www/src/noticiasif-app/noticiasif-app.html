@@ -6,14 +6,17 @@
 <link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../noticiasif-app/tag-campus.html">
 
 <dom-module id="noticiasif-app">
     <template>
         <style>
             :host {
                 display: block;
-                
-
+                --pull-icon-color: red;
             }
             .container{
                 box-sizing: border-box;
@@ -24,18 +27,41 @@
             }
             paper-card{
                 width: 100%;
-                
+                margin-bottom: 7px;
+            }  
+            paper-card .card-header{
+                font-size: 1.2em;
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-top: 10px;
+                color: #333;
             }
+            paper-card .card-date{
+                color: #777;
+                margin-left: 20px;
+                margin-top: 10px;
+                font-size: 0.8em;
+            }
+            paper-spinner{
+                justify-content: center;
+            }
+            .preloader{
+                text-align: center;
+                padding-top: 50px;
+                padding-bottom: 50px;
+            }
+
         </style>
 
         <iron-ajax
             auto
-            url="http://45.55.226.209/news/getLast"
-            headers='{"Content-Type": "application/json"}'
-            handle-as="json"
+            id="getNoticias"
+            url="http://45.55.226.209/news"
             method='GET'
+            content-type="application/x-www-form-urlencoded"
             debounce-duration="300"
-            last-response="{{ajaxResponse}}"></iron-ajax>
+            last-response="{{ajaxResponse}}"
+            loading="{{loading}}"></iron-ajax>
 
         <paper-drawer-panel>
             <paper-header-panel drawer>
@@ -45,30 +71,32 @@
             <paper-header-panel main>
                 <paper-toolbar>
                     <paper-icon-button paper-drawer-toggle icon="menu"></paper-icon-button>
-                    <span class="title">Notícias</span>
-                    <paper-icon-button icon="refresh"></paper-icon-button>
+                    <span class="title"></span>
+
+                    <paper-icon-button id="refresh" icon="refresh"></paper-icon-button>
                 </paper-toolbar>
 
                 <div class="container">
-                    <paper-card heading="Card title" image="" elevation="1" animated-shadow="false">
-                        <div class="card-content">
-                          
-                        {{ajaxResponse.success}}
 
-                        </div>
-                        <div class="card-actions">
-                        
-                        </div>
-                    </paper-card>
+                    <template is="dom-repeat" items="{{ajaxResponse.data}}" as="noticia">
+                        <template is="dom-if" if="[[_menorQuedez(index)]]">
+                            <paper-card elevation="1" animated-shadow="false">
+                                <div class="card-header">{{noticia.title}}</div>
+                                <div class="card-date">{{_getFormattedTimestamp(noticia.date)}}</div>
+                                <div class="card-content">{{noticia.subtitle}}</div>
+                                <tag-campus campus="[[noticia.campus]]"></tag-campus>
+                            </paper-card>
+                        </template>
+                    </template>
+                    <template is="dom-if" if="{{loading}}">
+                        <paper-card elevation="1" animated-shadow="false">
+                            <div class="preloader">
+                                <paper-spinner active></paper-spinner>
+                            </div>
+                            
+                       </paper-card>
+                     </template>
                 </div>
-
-
-
-
-
-
-
-
 
 
             </paper-header-panel>
@@ -79,7 +107,27 @@
 
     <script>
         Polymer({
-            is: 'noticiasif-app'
+            is: 'noticiasif-app',
+            ready: function(){
+                this.$.refresh.addEventListener("click", ()=>{
+                    this._atualizar();
+                })
+            },
+            _atualizar: function(){
+                console.log("atualizando");
+                this.ajaxResponse = null;
+                this.$.getNoticias.generateRequest();
+            },
+            _menorQuedez: function (index) {
+                return index < 10;
+            },
+            _expressao: function (exm) {
+                console.log(exm);
+                return exm;
+            },
+            _getFormattedTimestamp: function (timestamp) {
+                return new Date(timestamp).toLocaleString('pt-BR');
+            }
         });
     </script>
 </dom-module>

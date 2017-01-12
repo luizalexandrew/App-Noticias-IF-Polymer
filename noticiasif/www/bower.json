@@ -10,7 +10,11 @@
     "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.11",
     "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.7",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
-    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
+    "pull-to-action": "^1.1.0",
+    "paper-spinner": "PolymerElements/paper-spinner#^1.2.1",
+    "app-route": "PolymerElements/app-route#^0.9.3",
+    "iron-selector": "PolymerElements/iron-selector#^1.5.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

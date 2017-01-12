@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="tag-campus">
+
+	<template>
+		<style>
+			:host {
+	            display: block;               
+			}
+			.campus{
+				background-color: #8BC34A;
+			    color: #FFF;
+			    padding-left: 10px;
+			    padding-right: 10px;
+			    padding-bottom: 5px;
+			    padding-top: 5px;
+			    
+			}
+
+		</style>
+
+		<div class="campus">[[campus]]</div>
+	</template>
+
+	<script>
+		
+	Polymer({
+		is: "tag-campus",
+		properties:{
+			campus: String
+		}
+	})
+
+	</script>
+
+
+</dom-module>
